@@ -12,20 +12,22 @@ import logging as log
 import urllib.request
 import xml.etree.ElementTree as ET
 
-def pull_feed(feed_url = 'http://cepamerica.force.com/careers/ts2__apply_to_job?nostate=1&tSource=a0dG0000002vObVIAU&showJobs=500', filename = 'active_check.xml'):
+def pull_feed(feed_url='http://cepamerica.force.com/careers/ts2__apply_to_job?nostate=1&tSource=a0dG0000002vObVIAU&showJobs=500',
+            filename='active_check.xml'):
     '''
     Retrieves data from a URL and stores it as a file.
     
     Args:
-        URL : Location that contains the data the user is pulling.
-        Filename : Filename where the pulled data will be dumped.
+        feed_url (str): Location that contains the data the user is pulling. Defaults to CEP salesforce job link.
+        filename (str): File name where the pulled data will be dumped. Defaults to 'active_check.xml'.
     
     Returns:
         The file type and name per user specification.
     '''
     feed_data_pull = urllib.request.urlretrieve(feed_url, filename)
+    return filename
     
-def parse_xml(filename = 'active_check.xml'):
+def parse_xml(filename='active_check.xml'):
     feed = ET.parse(filename)
     root = feed.getroot()
     
@@ -39,15 +41,24 @@ def parse_xml(filename = 'active_check.xml'):
             elements.append(post_elements)
     return elements
         
-def clean_parse_data():
-    elements = parse_xml()
+def clean_parse_data(filename='active_check.xml'):
+    '''Parses the data in `filename` and returns a list of lists containing 
+    the data elements for each non-empty post element.
+    '''
+    elements = parse_xml(filename)
     for item in elements:
         if item == []:
             elements.remove(item)
     return elements
 
-def write_master(sname = 'master_file.xlsx'):
-    master_data = clean_parse_data()
+def write_master(fout='master_file.xlsx', filename='active_check.xml'):
+    '''Retrieves data from `filename` and saves it to `fout`.
+    
+    Args:
+        fout (str): File name to save the Excel data as. Should end with '.xlsx'. Defaults to 'master_file.xlsx'.
+        filename (str): File name containing the xml data. Defaults to 'active_check.xml'.
+    '''
+    master_data = clean_parse_data(filename)
     newWB = pxl.Workbook()
     sheet = newWB.active
     
@@ -63,12 +74,15 @@ def write_master(sname = 'master_file.xlsx'):
             sheet.cell(row = row_index, column = col_index).value = j
         row_index += 1
 
-    newWB.save(sname)
+    newWB.save(fout)
     
     
 def run():
-    pull_feed()
-    write_master()
+    feed_file = 'active_check.xml'
+    save_file = 'master_file.xlsx'
+    
+    pull_feed(filename=feed_file)
+    write_master(fout=save_file, filename=feed_file)
 
 if __name__ == '__main__':
     run()
