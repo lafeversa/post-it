@@ -1,13 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 import openpyxl as pxl
-import random
-import time
-from collections import OrderedDict
-from os.path import exists
-from os import replace
-import pickle
 import logging as log
 import urllib.request
 import xml.etree.ElementTree as ET
