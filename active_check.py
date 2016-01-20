@@ -4,13 +4,13 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 def pull_feed(feed_url='http://cepamerica.force.com/careers/ts2__apply_to_job?nostate=1&tSource=a0dG0000002vObVIAU&showJobs=500',
-            filename='active_check.xml'):
+            filename='active_file.xml'):
     '''
     Retrieves data from a URL and stores it as a file.
     
     Args:
         feed_url (str): Location that contains the data the user is pulling. Defaults to CEP salesforce job link.
-        filename (str): File name where the pulled data will be dumped. Defaults to 'active_check.xml'.
+        filename (str): File name where the pulled data will be dumped. Defaults to 'active_file.xml'.
     
     Returns:
         The file type and name per user specification.
@@ -18,7 +18,7 @@ def pull_feed(feed_url='http://cepamerica.force.com/careers/ts2__apply_to_job?no
     feed_data_pull = urllib.request.urlretrieve(feed_url, filename)
     return filename
     
-def parse_xml(filename='active_check.xml'):
+def parse_xml(filename='active_file.xml'):
     feed = ET.parse(filename)
     root = feed.getroot()
     
@@ -32,7 +32,7 @@ def parse_xml(filename='active_check.xml'):
             elements.append(post_elements)
     return elements
         
-def clean_parse_data(filename='active_check.xml'):
+def clean_parse_data(filename='active_file.xml'):
     '''Parses the data in `filename` and returns a list of lists containing 
     the data elements for each non-empty post element.
     '''
@@ -42,12 +42,12 @@ def clean_parse_data(filename='active_check.xml'):
             elements.remove(item)
     return elements
 
-def write_active(fout='active_file.xlsx', filename='active_check.xml'):
+def write_active(fout='active_file.xlsx', filename='active_file.xml'):
     '''Retrieves data from `filename` and saves it to `fout`.
     
     Args:
         fout (str): File name to save the Excel data as. Should end with '.xlsx'. Defaults to 'master_file.xlsx'.
-        filename (str): File name containing the xml data. Defaults to 'active_check.xml'.
+        filename (str): File name containing the xml data. Defaults to 'active_file.xml'.
     '''
     master_data = clean_parse_data(filename)
     newWB = pxl.Workbook()
@@ -69,7 +69,7 @@ def write_active(fout='active_file.xlsx', filename='active_check.xml'):
     
     
 def run():
-    feed_file = 'active_check.xml'
+    feed_file = 'active_file.xml'
     save_file = 'active_file.xlsx'
     
     pull_feed(filename=feed_file)
