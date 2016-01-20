@@ -42,7 +42,7 @@ def clean_parse_data(filename='active_check.xml'):
             elements.remove(item)
     return elements
 
-def write_master(fout='master_file.xlsx', filename='active_check.xml'):
+def write_active(fout='active_file.xlsx', filename='active_check.xml'):
     '''Retrieves data from `filename` and saves it to `fout`.
     
     Args:
@@ -70,10 +70,10 @@ def write_master(fout='master_file.xlsx', filename='active_check.xml'):
     
 def run():
     feed_file = 'active_check.xml'
-    save_file = 'master_file.xlsx'
+    save_file = 'active_file.xlsx'
     
     pull_feed(filename=feed_file)
-    write_master(fout=save_file, filename=feed_file)
+    write_active(fout=save_file, filename=feed_file)
 
 if __name__ == '__main__':
     run()
