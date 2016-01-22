@@ -10,6 +10,23 @@ def compare_checks():
     '''
     print('Run compare checks')
 
+def load_ids(active_file='active_file.xlsx'):
+    a_WB = pxl.load_workbook(active_file)
+    a_ST = a_WB.active
+    num_rows = len(a_ST.rows)
+    row_count = 1 
+    col_count = 2
+    ids = []
+    
+    while row_count <= num_rows:
+        c_index = a_ST.cell(row = row_count, column = col_count)
+        c_val = c_index.value
+        if c_val != None:
+            ids.append(c_val)
+        row_count += 1
+    print(ids)
+    compare_checks()
+    
 def find_active_file(active_file='active_file.xlsx'):
     '''Checks that active_file exists and proceeds or creates active_file and proceeds.
     
@@ -17,10 +34,10 @@ def find_active_file(active_file='active_file.xlsx'):
         active_file (str) = File name of active data from user feed. Should end with '.xlsx'. Defaults to 'active_file.xlsx'.
     '''
     if exists(active_file):
-        compare_checks()
+        load_ids()
     else:
         active_run()
-        compare_checks()
+        load_ids()
 
 def write_blank(fout='master_file.xlsx'):
     '''Writes blank file and saves it to 'fout'.
