@@ -5,15 +5,20 @@ from os import replace
 from active_check import run as active_run
 
 def compare_checks():
-    '''Compares data from active_file to data in master_file and removes duplications from active_file.
+    '''Compares data from active_file to data in master_file and stores new data as a list.
     '''
     ids = load_ids()
     mids = load_mids()
-    print('Run compare checks')
-    print(ids[0:3])
-    print('Accessed IDs correctly')
-    print('Now checking MIDs')
-    print(mids[0:3])
+    
+    nids = []
+    
+    for id in ids:
+        if id not in mids:
+            nids.append(id)
+    
+    print(nids)
+    
+    return nids
     
 def load_mids(master_file='master_file.xlsx'):
     '''Loads all the unique identifiers for posted jobs found in master_file.
@@ -21,7 +26,7 @@ def load_mids(master_file='master_file.xlsx'):
     m_WB = pxl.load_workbook(master_file)
     m_ST = m_WB.active
     num_rows = len(m_ST.rows)
-    row_count = 1
+    row_count = 2
     col_count = 2
     mids = []
     
