@@ -16,8 +16,6 @@ def compare_checks():
         if id not in mids:
             nids.append(id)
     
-    print(nids)
-    
     return nids
     
 def load_mids(master_file='master_file.xlsx'):
